@@ -25,33 +25,34 @@ using std::pair;
 using vec2d = vector<vector<int>>;
 
 /********************************* Some types  *************************************/
-enum reg_type { IN = 0 , OUT = 1, TEMP = 2 };
+enum edge_type { IN = 0 , OUT = 1, TEMP = 2 };
 enum operation_type { ADD = 0, SUB = 1, MULT = 2, DIV = 3 };
 /***********************************************************************************/
 
 /********************************* Edge Register  *************************************/
-struct reg
+class edge
 {
-	string reg_name;	// the register name
-	reg_type type;  	// the register type
+	bool in_range (int, int, int) const;
+
+public:
+	string edge_name;	// the register name
+	edge_type type;  	// the register type
 	int w; 				// width
 	int fw, lr;			// first write, last read
 
 	// constructors
-	reg () = default;
-	reg (string reg_name, reg_type type, int w, int fw, int lr) 
-		: reg_name (reg_name), type (type), w (w), fw (fw), lr (lr) {}
+	edge () = default;
+	edge (string reg_name, edge_type type, int w, int fw, int lr) 
+		: edge_name (reg_name), type (type), w (w), fw (fw), lr (lr) {}
 
-	bool is_compatible (const reg &) const;
-
-private:
-	bool in_range (int, int, int) const;
+	bool is_compatible (const edge &) const;
 };
 /***************************************************************************************/
 
 /********************************* Operation  *************************************/
-struct operation
+class operation
 {
+public:
 	string op_name;
 	operation_type type; // operation type
 	int w, ts,   		 // width and time step
@@ -71,8 +72,11 @@ struct operation
 /********************************* Data Flow Graph *************************************/
 class graph
 {
+	bool alap (int l, vector<int> &tl);	
+	void set_lifetime ();
+	
 public:
-	vector<reg> regs;
+	vector<edge> edges;
 	vector<operation> ops; 
 	array<int, 4> a;
 
@@ -80,12 +84,10 @@ public:
 	graph () = default;
 
 	// member methods
-	void add_register (string reg_name, int width, reg_type type);
+	void add_edge (string edge_name, int width, edge_type type);
 	void add_operation (string op_name, operation_type type, int width, string reg_in1, string reg_in2, string reg_out);	
-	bool alap (int l, vector<int> &tl);	
 	bool list_r (int l);
 	void list_l (int adds, int subs, int mults, int divs);
-	void set_lifetime ();
 	void print_graph ();
 };
 /***************************************************************************************/

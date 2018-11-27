@@ -47,7 +47,7 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	string filename = "inputs/toyexample.aif";
+	string filename = "inputs/ellip.aif";
 	ifstream fi (filename);
 
 	string s1, s2, s3, s4, s5;
@@ -59,7 +59,7 @@ void read_graph (graph &g)
 	while (s1 != "outputs")
 	{
 		fi >> width;
-		g.add_register(s1, width, IN);
+		g.add_edge(s1, width, IN);
 		fi >> s1;
 	}
 
@@ -68,7 +68,7 @@ void read_graph (graph &g)
 	while (s1 != "regs")
 	{
 		fi >> width;
-		g.add_register(s1, width, OUT);
+		g.add_edge(s1, width, OUT);
 		fi >> s1;
 	}
  
@@ -77,7 +77,7 @@ void read_graph (graph &g)
 	while (s1 != "op1")
 	{
 		fi >> width;
-		g.add_register(s1, width, TEMP);
+		g.add_edge(s1, width, TEMP);
 		fi >> s1;
 	}
 
@@ -113,13 +113,14 @@ int main ()
 	#else 
 		int a[4];
 		cout << "Enter the number of resources for ADD, SUB, MULT and DIV : ";
-		cin >> a[0] >> a[1] >> a[2] >> a[3];
+		std::cin >> a[0] >> a[1] >> a[2] >> a[3];
 		g.list_l (a[0], a[1], a[2], a[3]); 
 	#endif 
 
-	g.set_lifetime(); 
+	auto op_cliques = allocate_and_bind(g.ops);
+	auto reg_cliques = allocate_and_bind(g.edges);
 
-	datapath dp (g, allocate_and_bind (g.ops), allocate_and_bind (g.regs));
+	datapath dp (g, op_cliques, reg_cliques);
 
 	ofstream output ("output.vhd");
 	vhdl_generator gen (g, dp, "my_entity");

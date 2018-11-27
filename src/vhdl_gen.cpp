@@ -17,11 +17,11 @@ void vhdl_generator::create_entity (ostream &os)
 	os << "port\n(\n";	
 
 	// generate input/output ports
-	for (const auto &r : g.regs)
+	for (const auto &r : g.edges)
 		if (r.type == IN)
-			os << "\t" << r.reg_name << " : in std_logic_vector(" << r.w - 1 << " downto 0);\n";
+			os << "\t" << r.edge_name << " : in std_logic_vector(" << r.w - 1 << " downto 0);\n";
 		else if (r.type == OUT)
-			os << "\t" << r.reg_name << " : out std_logic_vector(" << r.w - 1 << " downto 0);\n";
+			os << "\t" << r.edge_name << " : out std_logic_vector(" << r.w - 1 << " downto 0);\n";
 
 	// generate WR for the different registers
 	for (const auto &r : dp.runits)

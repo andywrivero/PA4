@@ -36,4 +36,4 @@ template
 vector<vector<int>> allocate_and_bind (const vector<operation> &);
 
 template
-vector<vector<int>> allocate_and_bind (const vector<reg> &);
+vector<vector<int>> allocate_and_bind (const vector<edge> &);

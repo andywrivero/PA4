@@ -2,39 +2,39 @@
 #include "../header/data_structures.h"
 
 /********************************* Registers (Edges) Implementation *************************************/
-bool reg::is_compatible (const reg &r) const
+bool edge::is_compatible (const edge &e) const
 {
-	return !in_range(fw, r.fw, r.lr) && !in_range(r.fw, fw, lr);
+	return !in_range(fw, e.fw, e.lr) && !in_range(e.fw, fw, lr);
 }
 
-bool reg::in_range (int a, int l, int h) const
+bool edge::in_range (int a, int l, int h) const
 {
 	return a >= l && a < h;
 }
 /***************************************************************************************/
 
 /********************************* Operation Implementation *************************************/
-bool operation::is_compatible(const operation &op) const
+bool operation::is_compatible (const operation &op) const
 {
 	return type == op.type && ts != op.ts;
 }
 /***************************************************************************************/
 
 /********************************* Data Flow Graph Implementation *************************************/
-void graph::add_register (string reg_name, int width, reg_type type)
+void graph::add_edge (string edge_name, int width, edge_type type)
 {
 	if (type == TEMP)
-		regs.emplace_back(reg_name, type, width, 0, 0);
+		edges.emplace_back(edge_name, type, width, 0, 0);
 	else
-		regs.emplace_back(reg_name, type, width, 0, numeric_limits<int>::max());
+		edges.emplace_back(edge_name, type, width, 0, numeric_limits<int>::max());
 }
 
 void graph::add_operation (string op_name, operation_type type, int width, string reg_in1, string reg_in2, string reg_out)
 {
 	ops.emplace_back(op_name, type, width, 0, 
-		distance(regs.begin(), find_if(regs.begin(), regs.end(), [&] (const reg &r) { return r.reg_name == reg_in1; })),
-		distance(regs.begin(), find_if(regs.begin(), regs.end(), [&] (const reg &r) { return r.reg_name == reg_in2; })),
-		distance(regs.begin(), find_if(regs.begin(), regs.end(), [&] (const reg &r) { return r.reg_name == reg_out; })));
+		distance(edges.begin(), find_if(edges.begin(), edges.end(), [&] (const edge &e) { return e.edge_name == reg_in1; })),
+		distance(edges.begin(), find_if(edges.begin(), edges.end(), [&] (const edge &e) { return e.edge_name == reg_in2; })),
+		distance(edges.begin(), find_if(edges.begin(), edges.end(), [&] (const edge &e) { return e.edge_name == reg_out; })));
 
 	operation &op = ops[ops.size() - 1];
 
@@ -61,13 +61,13 @@ void graph::set_lifetime()
 
 	for (int i = 0; i < ops.size(); i++)
 	{
-		regs[ops[i].out].fw = ops[i].ts; 
+		edges[ops[i].out].fw = ops[i].ts; 
 
-		if (regs[ops[i].i1].lr < ops[i].ts)
-			regs[ops[i].i1].lr = ops[i].ts;
+		if (edges[ops[i].i1].lr < ops[i].ts)
+			edges[ops[i].i1].lr = ops[i].ts;
 
-		if (regs[ops[i].i2].lr < ops[i].ts)
-			regs[ops[i].i2].lr = ops[i].ts;
+		if (edges[ops[i].i2].lr < ops[i].ts)
+			edges[ops[i].i2].lr = ops[i].ts;
 	}
 }
 
@@ -161,6 +161,8 @@ bool graph::list_r (int l)
 		ts++;
 	}
 
+	set_lifetime();
+
 	return true;
 }
 
@@ -194,6 +196,8 @@ void graph::list_l (int adds, int subs, int mults, int divs)
 
 		ts++;
 	}
+
+	set_lifetime();
 }
 
 void graph::print_graph()
@@ -209,8 +213,8 @@ void graph::print_graph()
 
 		cout << endl;
 
-		cout << "Input registers: " << regs[op.i1].reg_name << ", " << regs[op.i2].reg_name << endl;
-		cout << "Output register: " << regs[op.out].reg_name << endl << endl;
+		cout << "Input registers: " << edges[op.i1].edge_name << ", " << edges[op.i2].edge_name << endl;
+		cout << "Output register: " << edges[op.out].edge_name << endl << endl;
 	}
 }
 /***************************************************************************************/
@@ -242,17 +246,17 @@ void datapath::create_register_units (const graph &g, const vec2d &reg_cliques)
 	{
 		string h = "r" + to_string(i);
 
-		if (g.regs[reg_cliques[i][0]].type == IN)
-			runits.emplace_back("",  "", g.regs[reg_cliques[i][0]].reg_name, "", g.regs[reg_cliques[i][0]].w, true);		
+		if (g.edges[reg_cliques[i][0]].type == IN)
+			runits.emplace_back("",  "", g.edges[reg_cliques[i][0]].edge_name, "", g.edges[reg_cliques[i][0]].w, true);		
 		else
-			runits.emplace_back("R" + to_string(i), h + "_in", h + "_out", h + "_WR", g.regs[reg_cliques[i][0]].w, false);
+			runits.emplace_back("R" + to_string(i), h + "_in", h + "_out", h + "_WR", g.edges[reg_cliques[i][0]].w, false);
 	}
 }
 
 void datapath::create_register_mux_units (const graph &g, const vec2d &op_cliques, const vec2d &reg_cliques)
 {
 	for (int i = 0; i < reg_cliques.size (); i++)
-		if (g.regs[reg_cliques[i][0]].type != IN)
+		if (g.edges[reg_cliques[i][0]].type != IN)
 		{
 			reg_mux.emplace_back ();
 			auto &mux = reg_mux.back();
@@ -313,8 +317,7 @@ void datapath::create_output_links (const graph &g, const vec2d &reg_cliques)
 {
 	for (int i = 0; i < reg_cliques.size(); i++)
 		for (auto r : reg_cliques[i])
-			if (g.regs[r].type == OUT)
-				outl.emplace_back(g.regs[r].reg_name, runits[i].out_name);
+			if (g.edges[r].type == OUT)
+				outl.emplace_back(g.edges[r].edge_name, runits[i].out_name);
 }
 /***************************************************************************************/
-
