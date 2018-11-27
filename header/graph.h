@@ -29,7 +29,7 @@ using vec2d = vector<vector<int>>;
 class graph
 {
 	bool alap (int l, vector<int> &tl);	
-	void set_lifetime ();
+	void set_edges_lifetime ();
 	
 public:
 	vector<edge> edges;

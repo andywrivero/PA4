@@ -35,7 +35,7 @@ void graph::add_operation (string op_name, operation_type type, int width, strin
 	}
 }
 
-void graph::set_lifetime()
+void graph::set_edges_lifetime()
 {
 	cout << "\nSetting edges life time\n";
 
@@ -141,7 +141,7 @@ bool graph::list_r (int l)
 		ts++;
 	}
 
-	set_lifetime();
+	set_edges_lifetime();
 
 	return true;
 }
@@ -177,7 +177,7 @@ void graph::list_l (int adds, int subs, int mults, int divs)
 		ts++;
 	}
 
-	set_lifetime();
+	set_edges_lifetime();
 }
 
 void graph::print_graph()
