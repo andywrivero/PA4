@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "../header/graph.h"
 #include "../header/algo.h"
-#include "../header/vhdl_gen.h"
+#include "../header/datapath_vhdl.h"
 #include "../header/datapath.h"
 #include "../header/operation.h"
 
@@ -49,7 +49,7 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	string filename = "inputs/ellip.aif";
+	string filename = "inputs/toyexample.aif";
 	ifstream fi (filename);
 
 	string s1, s2, s3, s4, s5;
@@ -125,7 +125,7 @@ int main ()
 	datapath dp (g, op_cliques, reg_cliques);
 
 	ofstream output ("output.vhd");
-	vhdl_generator gen (g, dp, "my_entity");
+	datapath_vhdl gen (g, dp, "my_entity");
 	gen.create_vhdl_code(output);
 
 	return 0;

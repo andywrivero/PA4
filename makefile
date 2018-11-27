@@ -8,10 +8,10 @@ OBJ = obj
 HDR = header
 BIN = bin
 
-$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/vhdl_gen.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
-	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/vhdl_gen.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
+$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
+	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
 
-$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/graph.h $(HDR)/algo.h $(HDR)/datapath.h $(HDR)/operation.h $(HDR)/vhdl_gen.h
+$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/graph.h $(HDR)/algo.h $(HDR)/datapath.h $(HDR)/operation.h $(HDR)/datapath_vhdl.h
 	$(CC) $(FLAG) -o $(OBJ)/driver.o -c $(SRC)/driver.cpp 
 
 $(OBJ)/graph.o: $(SRC)/graph.cpp $(HDR)/graph.h $(HDR)/edge.h $(HDR)/operation.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)
@@ -29,5 +29,5 @@ $(OBJ)/datapath.o: $(SRC)/datapath.cpp $(HDR)/datapath.h $(HDR)/graph.h $(HDR)/r
 $(OBJ)/algo.o: $(SRC)/algo.cpp $(HDR)/algo.h $(HDR)/graph.h $(SRC)/clique_partition.c
 	$(CC) $(FLAG) -o $(OBJ)/algo.o -c $(SRC)/algo.cpp
 
-$(OBJ)/vhdl_gen.o: $(SRC)/vhdl_gen.cpp $(HDR)/vhdl_gen.h $(HDR)/graph.h
-	$(CC) $(FLAG) -o $(OBJ)/vhdl_gen.o -c $(SRC)/vhdl_gen.cpp 
+$(OBJ)/datapath_vhdl.o: $(SRC)/datapath_vhdl.cpp $(HDR)/datapath_vhdl.h $(HDR)/graph.h
+	$(CC) $(FLAG) -o $(OBJ)/datapath_vhdl.o -c $(SRC)/datapath_vhdl.cpp 
