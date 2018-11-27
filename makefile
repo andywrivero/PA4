@@ -8,17 +8,26 @@ OBJ = obj
 HDR = header
 BIN = bin
 
-$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/data_structures.o  $(OBJ)/algo.o $(OBJ)/vhdl_gen.o
-	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/data_structures.o $(OBJ)/algo.o $(OBJ)/vhdl_gen.o
+$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/vhdl_gen.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
+	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/vhdl_gen.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o
 
-$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/data_structures.h $(HDR)/algo.h
+$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/graph.h $(HDR)/algo.h $(HDR)/datapath.h $(HDR)/operation.h $(HDR)/vhdl_gen.h
 	$(CC) $(FLAG) -o $(OBJ)/driver.o -c $(SRC)/driver.cpp 
 
-$(OBJ)/data_structures.o: $(SRC)/data_structures.cpp $(HDR)/data_structures.h
-	$(CC) $(FLAG) -o $(OBJ)/data_structures.o -c $(SRC)/data_structures.cpp 
+$(OBJ)/graph.o: $(SRC)/graph.cpp $(HDR)/graph.h $(HDR)/edge.h $(HDR)/operation.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)
+	$(CC) $(FLAG) -o $(OBJ)/graph.o -c $(SRC)/graph.cpp 
 
-$(OBJ)/algo.o: $(SRC)/algo.cpp $(HDR)/algo.h $(HDR)/data_structures.h $(SRC)/clique_partition.c
+$(OBJ)/edge.o: $(SRC)/edge.cpp $(HDR)/edge.h
+	$(CC) $(FLAG) -o $(OBJ)/edge.o -c $(SRC)/edge.cpp
+
+$(OBJ)/operation.o: $(SRC)/operation.cpp $(HDR)/operation.h
+	$(CC) $(FLAG) -o $(OBJ)/operation.o -c $(SRC)/operation.cpp
+
+$(OBJ)/datapath.o: $(SRC)/datapath.cpp $(HDR)/datapath.h $(HDR)/graph.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)/rmux_unit.h $(HDR)/fmux_unit.h
+	$(CC) $(FLAG) -o $(OBJ)/datapath.o -c $(SRC)/datapath.cpp
+
+$(OBJ)/algo.o: $(SRC)/algo.cpp $(HDR)/algo.h $(HDR)/graph.h $(SRC)/clique_partition.c
 	$(CC) $(FLAG) -o $(OBJ)/algo.o -c $(SRC)/algo.cpp
 
-$(OBJ)/vhdl_gen.o: $(SRC)/vhdl_gen.cpp $(HDR)/vhdl_gen.h $(HDR)/data_structures.h
+$(OBJ)/vhdl_gen.o: $(SRC)/vhdl_gen.cpp $(HDR)/vhdl_gen.h $(HDR)/graph.h
 	$(CC) $(FLAG) -o $(OBJ)/vhdl_gen.o -c $(SRC)/vhdl_gen.cpp 

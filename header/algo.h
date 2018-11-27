@@ -2,10 +2,9 @@
 #define ALGO_H
 
 #include <vector>
-#include "data_structures.h"
+#include "graph.h"
 
 using std::vector;
-using std::function;
 
 using vec2d = vector<vector<int>>;
 

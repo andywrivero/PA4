@@ -5,9 +5,11 @@
 #include <vector>
 #include <tuple>
 #include <algorithm>
-#include "../header/data_structures.h"
+#include "../header/graph.h"
 #include "../header/algo.h"
 #include "../header/vhdl_gen.h"
+#include "../header/datapath.h"
+#include "../header/operation.h"
 
 using std::ifstream;
 using std::ofstream;

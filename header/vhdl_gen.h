@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "data_structures.h"
+#include "graph.h"
+#include "datapath.h"
 
 using std::cout;
 using std::endl;
