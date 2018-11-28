@@ -3,6 +3,8 @@
 /********************************* Data Flow Graph Implementation *************************************/
 void graph::add_edge (string edge_name, int width, edge_type type)
 {
+	cout << "Adding DFG edge " << edge_name << endl;
+
 	if (type == TEMP)
 		edges.emplace_back(edge_name, type, width, 0, 0);
 	else
@@ -11,6 +13,8 @@ void graph::add_edge (string edge_name, int width, edge_type type)
 
 void graph::add_operation (string op_name, operation_type type, int width, string reg_in1, string reg_in2, string reg_out)
 {
+	cout << "Adding DFG operation "  << op_name << endl;
+
 	ops.emplace_back(op_name, type, width, 0, 
 		distance(edges.begin(), find_if(edges.begin(), edges.end(), [&] (const edge &e) { return e.edge_name == reg_in1; })),
 		distance(edges.begin(), find_if(edges.begin(), edges.end(), [&] (const edge &e) { return e.edge_name == reg_in2; })),
@@ -37,7 +41,7 @@ void graph::add_operation (string op_name, operation_type type, int width, strin
 
 void graph::set_edges_lifetime()
 {
-	cout << "\nSetting edges life time\n";
+	cout << "Setting edges life time...\n";
 
 	for (int i = 0; i < ops.size(); i++)
 	{
@@ -53,7 +57,7 @@ void graph::set_edges_lifetime()
 
 bool graph::alap (int l, vector<int> &tl)
 {
-	cout << "Running ALAP\n";
+	cout << "Running ALAP...\n";
 
 	if (l <= 0) return false;
 
@@ -94,7 +98,7 @@ bool graph::list_r (int l)
 
 	if (!alap (l, tl)) return false;
 
-	cout << "\nRunning List_R algorithm\n";
+	cout << "Running List_R algorithm...\n";
 
 	a.fill(0);
 
@@ -148,7 +152,7 @@ bool graph::list_r (int l)
 
 void graph::list_l (int adds, int subs, int mults, int divs)
 {
-	cout << "\nRunning List_L algorithm\n";
+	cout << "Running List_L algorithm\n";
 
 	a = { adds, subs, mults, divs };
 

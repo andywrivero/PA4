@@ -7,9 +7,12 @@
 #include <algorithm>
 #include "../header/graph.h"
 #include "../header/algo.h"
-#include "../header/datapath_vhdl.h"
-#include "../header/datapath.h"
 #include "../header/operation.h"
+#include "../header/datapath.h"
+#include "../header/datapath_vhdl.h"
+#include "../header/controller.h"
+#include "../header/controller_vhdl.h"
+#include "../header/testbench_vhdl.h"
 
 using std::ifstream;
 using std::ofstream;
@@ -18,6 +21,8 @@ using std::string;
 using std::cout;
 using std::endl;
 using std::to_string;
+
+string filename;
 
 /*************************** Driver methods **********************/
 operation_type to_operation_type (string stype)
@@ -49,8 +54,10 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	string filename = "inputs/toyexample.aif";
-	ifstream fi (filename);
+	filename = "toyexample";
+	string filext = ".aif";
+	string filepath = "inputs/" + filename + filext;
+	ifstream fi (filepath);
 
 	string s1, s2, s3, s4, s5;
 	int width;
@@ -120,13 +127,24 @@ int main ()
 	#endif 
 
 	auto op_cliques = allocate_and_bind(g.ops);
-	auto reg_cliques = allocate_and_bind(g.edges);
+	auto edge_cliques = allocate_and_bind(g.edges);
 
-	datapath dp (g, op_cliques, reg_cliques);
+	datapath dp (g, op_cliques, edge_cliques);
+	datapath_vhdl dp_vhdl (g, dp, filename);
+	ofstream output (filename + "_datapath.vhd");
+	dp_vhdl.create_vhdl_code(output);
+	output.close();
 
-	ofstream output ("output.vhd");
-	datapath_vhdl gen (g, dp, "my_entity");
-	gen.create_vhdl_code(output);
+	controller contr (g, dp);
+	controller_vhdl contr_vhdl (g, dp, contr, filename);
+	output.open(filename + "_controller.vhd");
+	contr_vhdl.create_vhdl_code(output);
+	output.close ();
+
+	testbench_vhdl testbech (g, dp, contr, filename);
+	output.open(filename + "_testbench.vhd");
+	testbech.create_vhdl_code(output);
+	output.close ();
 
 	return 0;
 }
