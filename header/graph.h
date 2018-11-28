@@ -2,6 +2,7 @@
 #define DATA_STRUCTURES_H
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <limits>

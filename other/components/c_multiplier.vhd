@@ -40,7 +40,7 @@ begin
 	     end if;
 	     value := value / 2;
           end loop;
-	  output <= result((2*width)-2 downto 0);
+	  output <= result(width - 1 downto 0);
        end process P0;
 	 
 --         variable result: std_logic_vector((2*width) - 1 downto 0);

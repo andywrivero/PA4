@@ -42,7 +42,7 @@ void controller::generate_control_signals (const graph &g, const datapath &dp)
 							for (int j = 0; j < mux.in.size(); j++) // mux.in[j] is a register unit. See if one of the binded edges of this register is the input of the mux
 								if (find(mux.in[j]->edges->begin(), mux.in[j]->edges->end(), m == 0 ? g.ops[o].i1 : g.ops[o].i2) != mux.in[j]->edges->end())
 								{
-									signal.emplace_back(ts, mux.sel_name, j, mux.w, true); // add a new control signal
+									signal.emplace_back(ts, mux.sel_name, j, mux.sel_size, true); // add a new control signal
 									break;
 								}
 					}
@@ -69,7 +69,7 @@ void controller::generate_control_signals (const graph &g, const datapath &dp)
 								for (int j = 0; j < mux.in.size(); j++) // find which input of the mux we must select on this time step
 									if (&dp.funits[i] == mux.in[j])
 									{
-										signal.emplace_back(ts, mux.sel_name, j, mux.w, true);
+										signal.emplace_back(ts, mux.sel_name, j, mux.sel_size, true);
 										break;
 									}
 

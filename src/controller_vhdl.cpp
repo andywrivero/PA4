@@ -37,9 +37,9 @@ void controller_vhdl::create_entity (ostream &os)
 	}
 
 	os << "\tstart : in std_logic;\n";
-	os << "\tdone : out std_logic);\n";
+	os << "\tdone : out std_logic;\n";
 	os << "\tclear : out std_logic;\n";
-	os << "\tclock : in std_logic;\n";
+	os << "\tclock : in std_logic);\n";
 
 	os << "end " << entity_name << "_controller;\n";
 }
@@ -62,14 +62,14 @@ void controller_vhdl::create_architecture (ostream &os)
 void controller_vhdl::create_signals (ostream &os)
 {
 	os << "--------------------------- State controller --------------------------------\n";
-	os <<"\tstate : integer range 0 to " << max_timestep() << " := 0;\n";
+	os <<"\tsignal state : integer range 0 to " << max_timestep() + 1 << " := 0;\n";
 }
 
 void controller_vhdl::create_process (ostream &os)
 {
-	os <<"\tprocess (clk)\n";
+	os <<"\tprocess (clock)\n";
 	os <<"\tbegin\n";
-	os <<"\t\tif rising_edge (clk) then\n";
+	os <<"\t\tif rising_edge (clock) then\n";
 	os << "\t\t\tcase state is\n";
 
 	int mts = max_timestep();

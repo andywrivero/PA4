@@ -2,11 +2,13 @@
 #define CONTROLLER_H
 
 #include <vector>
+#include <algorithm>
 #include "datapath.h"
 #include "graph.h"
 
 using std::vector;
 using std::pair;
+using std::find_if;
 
 class controller
 {

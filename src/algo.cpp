@@ -3,7 +3,7 @@
 
 template <class T>
 vec2d allocate_and_bind (const vector<T> &v)
-{
+{	
 	int* comp[v.size()];
 
 	for (int i = 0; i < v.size(); i++) comp[i] = new int[v.size()];

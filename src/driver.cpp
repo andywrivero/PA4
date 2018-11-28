@@ -54,7 +54,7 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	filename = "toyexample";
+	filename = "add3";
 	string filext = ".aif";
 	string filepath = "inputs/" + filename + filext;
 	ifstream fi (filepath);
@@ -126,23 +126,30 @@ int main ()
 		g.list_l (a[0], a[1], a[2], a[3]); 
 	#endif 
 
+	cout << "Allocating and binding operations...\n";
 	auto op_cliques = allocate_and_bind(g.ops);
+	cout << "Allocating and binding edges...\n";
 	auto edge_cliques = allocate_and_bind(g.edges);
 
+	cout << "Creating datapath...\n";
 	datapath dp (g, op_cliques, edge_cliques);
-	datapath_vhdl dp_vhdl (g, dp, filename);
 	ofstream output (filename + "_datapath.vhd");
+	cout << "Creating VHDL file out of datapath\n";
+	datapath_vhdl dp_vhdl (g, dp, filename);
 	dp_vhdl.create_vhdl_code(output);
 	output.close();
 
+	cout << "Creating controller...\n";
 	controller contr (g, dp);
-	controller_vhdl contr_vhdl (g, dp, contr, filename);
 	output.open(filename + "_controller.vhd");
+	cout << "Creating VHDL file out of controller...\n";
+	controller_vhdl contr_vhdl (g, dp, contr, filename);
 	contr_vhdl.create_vhdl_code(output);
 	output.close ();
 
-	testbench_vhdl testbech (g, dp, contr, filename);
 	output.open(filename + "_testbench.vhd");
+	cout << "Creating VHDL testbench file...\n";
+	testbench_vhdl testbech (g, dp, contr, filename);
 	testbech.create_vhdl_code(output);
 	output.close ();
 
