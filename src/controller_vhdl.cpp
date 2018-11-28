@@ -62,7 +62,7 @@ void controller_vhdl::create_architecture (ostream &os)
 void controller_vhdl::create_signals (ostream &os)
 {
 	os << "--------------------------- State controller --------------------------------\n";
-	os <<"\tstate : integer range 0 to " << contr.max_ts + 1 << " := 0;\n";
+	os <<"\tstate : integer range 0 to " << max_timestep() << " := 0;\n";
 }
 
 void controller_vhdl::create_process (ostream &os)
@@ -71,8 +71,10 @@ void controller_vhdl::create_process (ostream &os)
 	os <<"\tbegin\n";
 	os <<"\t\tif rising_edge (clk) then\n";
 	os << "\t\t\tcase state is\n";
+
+	int mts = max_timestep();
 	
-	for (int ts = 0; ts <= contr.max_ts + 1; ts++)
+	for (int ts = 0; ts <= mts + 1; ts++)
 	{
 		os << "\t\t\t\twhen " << ts << " =>\n";
 
@@ -95,7 +97,7 @@ void controller_vhdl::create_process (ostream &os)
 		}
 		else 
 		{
-			if (ts < contr.max_ts + 1)
+			if (ts < mts + 1)
 				os << "\t\t\t\t\tstate <= " << ts + 1 << ";\n\n";
 			else
 				os << "\t\t\t\t\tstate <= 0;\n\n";
@@ -105,4 +107,14 @@ void controller_vhdl::create_process (ostream &os)
 	os << "\t\t\tend case;\n"; 	
 	os <<"\t\tend if;\n";
 	os <<"\tend process;\n";
+}
+
+int controller_vhdl::max_timestep ()
+{
+	int mts = numeric_limits<int>::min ();
+
+	for (auto &o : g.ops) 
+		mts = std::max (mts, o.ts);
+
+	return mts;
 }

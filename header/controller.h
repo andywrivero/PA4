@@ -10,9 +10,8 @@ using std::pair;
 
 class controller
 {
-	pair<int, int> get_minmax_timesteps (const graph &);
-
-	void generate_control_signals (const pair<int, int> &, const graph &, const datapath &);
+	int max_timestep (const graph &);
+	void generate_control_signals (const graph &, const datapath &);
 
 public:
 	struct control_signal
@@ -25,7 +24,6 @@ public:
 			: ts (ts), signal_name (signal_name), val (val), w (w), is_vector (is_vector) {}
 	};
 
-	int max_ts;
 	vector<control_signal> signal;
 
 	controller (const graph &, const datapath &);
