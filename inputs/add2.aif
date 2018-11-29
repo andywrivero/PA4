@@ -1,0 +1,4 @@
+inputs a 4 b 4
+outputs c 4 
+op1 ADD 4 a b c
+end

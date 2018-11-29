@@ -10,7 +10,7 @@ using std::vector;
 
 struct rmux_unit : public mux_unit
 {
-	reg_unit *out;
+	reg_unit *out = nullptr;
 	vector<fu_unit *> in;
 };
 

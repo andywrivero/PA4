@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include "controller.h"
 #include "datapath.h"
 
@@ -16,7 +17,6 @@ private:
 	void create_architecture (ostream &);
 	void create_signals (ostream &);
 	void create_process (ostream &);
-	int max_timestep ();
 
 public:
 	graph &g;

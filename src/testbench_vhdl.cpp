@@ -2,7 +2,9 @@
 
 void testbench_vhdl::create_vhdl_code (ostream &os)
 {
+	cout << "Creating Testbench Entity\n";
 	create_entity (os);
+	cout << "Creating Testbench Architecture\n";
 	create_architecture (os);
 }
 
@@ -156,9 +158,9 @@ void testbench_vhdl::create_test_process (ostream &os)
 	os << "\t\t----------------------------------------------------------------------------------\n";
 	//
 
-	os << "\t\twait for clock_period;\n";
+	os << "\t\twait until rising_edge(clock);\n";
 	os << "\t\tstart <= '1';\n";
-	os << "\t\twait for clock_period;\n";
+	os << "\t\twait until rising_edge(clock);\n";
 	os << "\t\tstart <= '0';\n";
 	os << "\t\twait;\n";
 	os <<"\tend process;\n";

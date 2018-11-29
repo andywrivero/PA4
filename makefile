@@ -38,5 +38,5 @@ $(OBJ)/controller.o: $(SRC)/controller.cpp $(HDR)/controller.h $(HDR)/graph.h $(
 $(OBJ)/controller_vhdl.o: $(SRC)/controller_vhdl.cpp $(HDR)/controller_vhdl.h $(HDR)/controller.h $(HDR)/datapath.h
 	$(CC) $(FLAG) -o $(OBJ)/controller_vhdl.o -c $(SRC)/controller_vhdl.cpp
 
-$(OBJ)/testbench_vhdl.o: $(SRC)/testbench_vhdl.cpp $(HDR)/testbench_vhdl.h $(HDR)/controller.h $(HDR)/datapath.h
+$(OBJ)/testbench_vhdl.o: $(SRC)/testbench_vhdl.cpp $(HDR)/testbench_vhdl.h $(HDR)/controller.h $(HDR)/datapath.h $(HDR)/graph.h
 	$(CC) $(FLAG) -o $(OBJ)/testbench_vhdl.o -c $(SRC)/testbench_vhdl.cpp 

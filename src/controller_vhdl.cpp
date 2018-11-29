@@ -2,7 +2,9 @@
 
 void controller_vhdl::create_vhdl_code (ostream &os)
 {
+	cout << "Creating Controller Entity\n";
 	create_entity (os);
+	cout << "Creating Controller Architecture\n";
 	create_architecture (os);
 }
 
@@ -51,8 +53,6 @@ void controller_vhdl::create_architecture (ostream &os)
 	create_signals(os);
 
 	os << "\nbegin\n";
-	
-	os << "\tclear <= '1' when state = 0 else '0';\n\n";
 
 	create_process (os);
 
@@ -62,7 +62,7 @@ void controller_vhdl::create_architecture (ostream &os)
 void controller_vhdl::create_signals (ostream &os)
 {
 	os << "--------------------------- State controller --------------------------------\n";
-	os <<"\tsignal state : integer range 0 to " << max_timestep() + 1 << " := 0;\n";
+	os <<"\tsignal state : integer range 0 to " << g.max_timestep() + 1 << " := 0;\n";
 }
 
 void controller_vhdl::create_process (ostream &os)
@@ -72,7 +72,7 @@ void controller_vhdl::create_process (ostream &os)
 	os <<"\t\tif rising_edge (clock) then\n";
 	os << "\t\t\tcase state is\n";
 
-	int mts = max_timestep();
+	int mts = g.max_timestep();
 	
 	for (int ts = 0; ts <= mts + 1; ts++)
 	{
@@ -90,13 +90,15 @@ void controller_vhdl::create_process (ostream &os)
 		if (ts == 0)
 		{
 			os << "\n\t\t\t\t\tif start = '1' then\n";
+			os << "\t\t\t\t\t\tclear <= '1';\n";
 			os << "\t\t\t\t\t\tstate <= 1;\n";
-			os << "\t\t\t\t\telse\n";
-			os << "\t\t\t\t\t\tstate <= 0;\n";
 			os << "\t\t\t\t\tend if;\n\n";
 		}
 		else 
 		{
+			if (ts == 1)
+				os << "\t\t\t\t\tclear <= '0';\n";
+
 			if (ts < mts + 1)
 				os << "\t\t\t\t\tstate <= " << ts + 1 << ";\n\n";
 			else
@@ -107,14 +109,4 @@ void controller_vhdl::create_process (ostream &os)
 	os << "\t\t\tend case;\n"; 	
 	os <<"\t\tend if;\n";
 	os <<"\tend process;\n";
-}
-
-int controller_vhdl::max_timestep ()
-{
-	int mts = numeric_limits<int>::min ();
-
-	for (auto &o : g.ops) 
-		mts = std::max (mts, o.ts);
-
-	return mts;
 }

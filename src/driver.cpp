@@ -54,7 +54,7 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	filename = "add3";
+	filename = "toyexample";
 	string filext = ".aif";
 	string filepath = "inputs/" + filename + filext;
 	ifstream fi (filepath);
@@ -74,14 +74,14 @@ void read_graph (graph &g)
 
 	fi >> s1; // first output register name
 
-	while (s1 != "regs")
+	while (s1 != "regs" && s1 != "op1")
 	{
 		fi >> width;
 		g.add_edge(s1, width, OUT);
 		fi >> s1;
 	}
  
-	fi >> s1; // first intermediate register name
+	if (s1 == "regs") fi >> s1; // first intermediate register name
 
 	while (s1 != "op1")
 	{
@@ -126,31 +126,38 @@ int main ()
 		g.list_l (a[0], a[1], a[2], a[3]); 
 	#endif 
 
-	cout << "Allocating and binding operations...\n";
-	auto op_cliques = allocate_and_bind(g.ops);
-	cout << "Allocating and binding edges...\n";
-	auto edge_cliques = allocate_and_bind(g.edges);
+	cout << "Allocating and binding operations\n";
+	auto ops_cliques = allocate_and_bind(g.ops);
+	cout << "Done.\n";
+	
+	cout << "Allocating and binding edges\n";
+	auto edge_cliques = allocate_and_bind(g.edges); 
+	cout << "Done.\n";
 
+	cout << "All allocation and binding is done.\n";
 	cout << "Creating datapath...\n";
-	datapath dp (g, op_cliques, edge_cliques);
-	ofstream output (filename + "_datapath.vhd");
-	cout << "Creating VHDL file out of datapath\n";
+	datapath dp (g, ops_cliques, edge_cliques);
+	ofstream output ("VHDL_files/" + filename + "_datapath.vhd");
+	cout << "Creating datapath's VHDL code\n";
 	datapath_vhdl dp_vhdl (g, dp, filename);
 	dp_vhdl.create_vhdl_code(output);
 	output.close();
+	cout << "Done.\n";
 
 	cout << "Creating controller...\n";
-	controller contr (g, dp);
-	output.open(filename + "_controller.vhd");
-	cout << "Creating VHDL file out of controller...\n";
+	controller contr (dp);
+	output.open("VHDL_files/" + filename + "_controller.vhd");
+	cout << "Creating controller's VHDL code\n";
 	controller_vhdl contr_vhdl (g, dp, contr, filename);
 	contr_vhdl.create_vhdl_code(output);
 	output.close ();
+	cout << "Done.\n";
 
-	output.open(filename + "_testbench.vhd");
-	cout << "Creating VHDL testbench file...\n";
+	output.open("VHDL_files/" + filename + "_testbench.vhd");
+	cout << "Creating testbench VHDL code\n";
 	testbench_vhdl testbech (g, dp, contr, filename);
 	testbech.create_vhdl_code(output);
+	cout << "Done.\n";
 	output.close ();
 
 	return 0;

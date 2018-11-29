@@ -12,8 +12,11 @@ using std::find_if;
 
 class controller
 {
-	int max_timestep (const graph &);
-	void generate_control_signals (const graph &, const datapath &);
+	void generate_control_signals (const datapath &);
+	void create_mux_signal (const fmux_unit &, int, int);
+	void create_mux_signal (const vector<rmux_unit> &, const fu_unit &, int, int);
+	void create_WR_signal (const reg_unit &, int);
+	int max_timestep (const datapath &) const;
 
 public:
 	struct control_signal
@@ -28,7 +31,7 @@ public:
 
 	vector<control_signal> signal;
 
-	controller (const graph &, const datapath &);
+	controller (const datapath &);
 };
 
 #endif

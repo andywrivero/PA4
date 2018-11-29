@@ -184,21 +184,12 @@ void graph::list_l (int adds, int subs, int mults, int divs)
 	set_edges_lifetime();
 }
 
-void graph::print_graph()
+int graph::max_timestep () const 
 {
-	cout << "\n Data Flow Graph\n";
+	int mts = numeric_limits<int>::min ();
 
-	for (auto op : ops)
-	{
-		cout << "Name : " << op.op_name << endl << "Succesors: ";
+	for (auto &o : ops) mts = std::max (mts, o.ts);
 
-		for (int i = 0; i < op.suc.size(); i++)
-			cout << ops[op.suc[i]].op_name << " ";
-
-		cout << endl;
-
-		cout << "Input registers: " << edges[op.i1].edge_name << ", " << edges[op.i2].edge_name << endl;
-		cout << "Output register: " << edges[op.out].edge_name << endl << endl;
-	}
+	return mts;
 }
 /***************************************************************************************/

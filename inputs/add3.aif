@@ -1,0 +1,7 @@
+inputs x1 4 x2 4 x3 4 x4 4
+outputs z 4
+regs e1 4 e2 4
+op1 ADD 4 x1 x2 e1
+op2 ADD 4 x3 x4 e2
+op3 ADD 4 e1 e2 z
+end

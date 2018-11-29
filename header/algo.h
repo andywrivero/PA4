@@ -1,6 +1,7 @@
 #ifndef ALGO_H
 #define ALGO_H
 
+#include <iostream>
 #include <vector>
 #include "graph.h"
 

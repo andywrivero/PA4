@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include "graph.h"
 #include "controller.h"
 #include "datapath.h"
 

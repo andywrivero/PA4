@@ -45,7 +45,7 @@ public:
 	void add_operation (string op_name, operation_type type, int width, string reg_in1, string reg_in2, string reg_out);	
 	bool list_r (int l);
 	void list_l (int adds, int subs, int mults, int divs);
-	void print_graph ();
+	int max_timestep () const;
 };
 
 #endif

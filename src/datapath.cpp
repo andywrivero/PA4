@@ -2,21 +2,45 @@
 
 datapath::datapath (const graph &g, const vec2d &op_cliques, const vec2d &edge_cliques)
 {
+	cout << "Creating functional units\n";
 	create_functional_units (g, op_cliques);
+	cout << "Done.\n";
+
+	cout << "Creating registers units\n";
 	create_register_units (g, edge_cliques);
-	create_register_mux_units (g, op_cliques, edge_cliques);
-	create_fu_mux_units(g, op_cliques, edge_cliques);
-	create_output_links (g, edge_cliques);
+	cout << "Done.\n";
+
+	cout << "Creating register's MUXES\n";
+	create_register_mux_units (g);
+	cout << "Done.\n";
+
+	cout << "Creating fucntinal units's MUXES\n";
+	create_fu_mux_units(g);
+	cout << "Done.\n";
+
+	cout << "Mapping output signals to register's output\n";
+	create_output_links (g);
+	cout << "Done.\n";
 }
 
 void datapath::create_functional_units (const graph &g, const vec2d &op_cliques)
 {
-	for (int i = 0; i < op_cliques.size(); i++)
+	for (int i = 0; i < op_cliques.size(); i++) // a functional unit per clique of operations
 	{
 		string si = to_string(i);
 
 		funits.emplace_back("FU" + si, "fu" + si + "_i1", "fu" + si + "_i2", "fu" + si + "_out", 
-							g.ops[op_cliques[i][0]].w, g.ops[op_cliques[i][0]].type, &(op_cliques[i])); 
+							g.ops[op_cliques[i][0]].w, g.ops[op_cliques[i][0]].type);
+
+		// add time-step, left, right inputs, and output edge dependencies of this functional unit
+		for (const int &o : op_cliques[i])
+		{
+			// these vectors keep the necessary information in parallel
+			funits.back().ts.push_back(g.ops[o].ts); // add time at which this functional unit must be scheduled
+			funits.back().i[0].push_back (g.ops[o].i1); // push a left input edge 
+			funits.back().i[1].push_back (g.ops[o].i2); // push a right input edges
+			funits.back().out.push_back (g.ops[o].out); // push an output edge
+		}					 
 	}
 }
 
@@ -27,16 +51,18 @@ void datapath::create_register_units (const graph &g, const vec2d &edge_cliques)
 		string h = "r" + to_string(i);
 
 		if (g.edges[edge_cliques[i][0]].type == IN)
-			runits.emplace_back("",  "", g.edges[edge_cliques[i][0]].edge_name, "", g.edges[edge_cliques[i][0]].w, true, &(edge_cliques[i]));		
+			runits.emplace_back("",  "", g.edges[edge_cliques[i][0]].edge_name, "", g.edges[edge_cliques[i][0]].w, true);		
 		else
-			runits.emplace_back("R" + to_string(i), h + "_in", h + "_out", h + "_WR", g.edges[edge_cliques[i][0]].w, false, &(edge_cliques[i]));
+			runits.emplace_back("R" + to_string(i), h + "_in", h + "_out", h + "_WR", g.edges[edge_cliques[i][0]].w, false);
+
+		runits.back().edges = std::move(edge_cliques[i]);
 	}
 }
 
-void datapath::create_register_mux_units (const graph &g, const vec2d &op_cliques, const vec2d &edge_cliques)
+void datapath::create_register_mux_units (const graph &g)
 {
 	for (int i = 0; i < runits.size(); i++)
-		if (g.edges[runits[i].edges->at(0)].type != IN)
+		if (g.edges[runits[i].edges[0]].type != IN)
 		{
 			reg_mux.emplace_back ();
 
@@ -46,11 +72,11 @@ void datapath::create_register_mux_units (const graph &g, const vec2d &op_clique
 			mux.out = &runits[i];
 			mux.w = runits[i].w;
 
-			for (int j = 0; j < funits.size(); j++)
-				for (int k : *(funits[j].ops))
-					if (find (runits[i].edges->begin (), runits[i].edges->end (), g.ops[k].out) != runits[i].edges->end ())
+			for (auto &fu : funits)
+				for (int out : fu.out)
+					if (find(mux.out->edges.begin(), mux.out->edges.end(), out) != mux.out->edges.end())
 					{
-						mux.in.push_back(&funits[j]);
+						mux.in.push_back(&fu);
 						break;
 					}
 
@@ -58,7 +84,7 @@ void datapath::create_register_mux_units (const graph &g, const vec2d &op_clique
 		}
 }
 
-void datapath::create_fu_mux_units (const graph &g, const vec2d &op_cliques, const vec2d &edge_cliques)
+void datapath::create_fu_mux_units (const graph &g)
 {
 	for (int i = 0; i < funits.size(); i++)
 	{
@@ -73,19 +99,11 @@ void datapath::create_fu_mux_units (const graph &g, const vec2d &op_cliques, con
 			mux.out = &funits[i];
 			mux.w = funits[i].w;
 
-			vector<int> ins;
-
-			for (int o : *(funits[i].ops))
-				if (m == 0)
-					ins.push_back(g.ops[o].i1);
-				else 
-					ins.push_back(g.ops[o].i2);
-
-			for (int j = 0; j < runits.size(); j++)
-				for (int k : *(runits[j].edges))
-					if (find(ins.begin(), ins.end(), k) != ins.end())
+			for (auto &r : runits)
+				for (int e : r.edges)
+					if (find (funits[i].i[m].begin(), funits[i].i[m].end(), e) != funits[i].i[m].end())
 					{
-						mux.in.push_back(&runits[j]);
+						mux.in.push_back(&r);
 						break;
 					}
 
@@ -94,10 +112,10 @@ void datapath::create_fu_mux_units (const graph &g, const vec2d &op_cliques, con
 	}
 }
 
-void datapath::create_output_links (const graph &g, const vec2d &edge_cliques)
+void datapath::create_output_links (const graph &g)
 {
-	for (int i = 0; i < edge_cliques.size(); i++)
-		for (auto r : edge_cliques[i])
-			if (g.edges[r].type == OUT)
-				outl.emplace_back(g.edges[r].edge_name, runits[i].out_name);
+	for (const auto &r : runits)
+		for (int e : r.edges)
+			if (g.edges[e].type == OUT)
+				outl.emplace_back(g.edges[e].edge_name, r.out_name);
 }

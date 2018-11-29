@@ -17,9 +17,9 @@ class datapath
 private:
 	void create_functional_units (const graph &, const vec2d &);
 	void create_register_units (const graph &, const vec2d &);
-	void create_register_mux_units (const graph &, const vec2d &, const vec2d &);
-	void create_fu_mux_units (const graph &, const vec2d &, const vec2d &);
-	void create_output_links (const graph &, const vec2d &);
+	void create_register_mux_units (const graph &);
+	void create_fu_mux_units (const graph &);
+	void create_output_links (const graph &);
 
 public:
 	vector<fu_unit> funits;

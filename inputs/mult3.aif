@@ -1,0 +1,7 @@
+inputs x1 8 x2 8 x3 8 x4 8
+outputs z 8
+regs e1 8 e2 8
+op1 ADD 8 x1 x2 e1
+op2 MULT 8 x3 x4 e2
+op3 ADD 8 e1 e2 z
+end

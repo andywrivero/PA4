@@ -2,7 +2,9 @@
 
 void datapath_vhdl::create_vhdl_code(ostream &os)
 {
+	cout << "Creating Datapath Entity\n";
 	create_entity(os);
+	cout << "Creating Datapath Architecture\n";
 	create_architecture(os);
 }
 
@@ -168,12 +170,11 @@ void datapath_vhdl::create_reg_mux (ostream &os)
 			os << "\tport map\n";
 			os << "\t(";
 			
-			for (int i = 0, k = mux.in.size(); i < mux.in.size(); i++, k--)
+			for (int i = 0, from = mux.w - 1, to = 0; i < mux.in.size(); i++, from += mux.w, to += mux.w)
 			{
 				if (i > 0) os << "\t";
 
-				os << "input(" << mux.w * k - 1 << " downto " << mux.w * (k - 1) << ") => " 
-				   << mux.in[i]->out_name << ",\n";
+				os << "input(" << from << " downto " << to << ") => " << mux.in[i]->out_name << ",\n";
 			}
 
 			os << "\toutput => " << mux.out->in_name << ",\n";
@@ -207,12 +208,11 @@ void datapath_vhdl::create_fu_mux (ostream &os)
 				os << "\tport map\n";
 				os << "\t(";
 			
-				for (int i = 0, k = mux.in.size(); i < mux.in.size(); i++, k--)
+				for (int i = 0, from = mux.w - 1, to = 0; i < mux.in.size(); i++, from += mux.w, to += mux.w)
 				{
 					if (i > 0) os << "\t";
 
-					os << "input(" << mux.w * k - 1 << " downto " << mux.w * (k - 1) << ") => " 
-					   << mux.in[i]->out_name << ",\n";			
+					os << "input(" << from << " downto " << to << ") => " << mux.in[i]->out_name << ",\n";			
 				}
 
 				if (m == 0)
