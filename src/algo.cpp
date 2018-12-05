@@ -1,3 +1,13 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Source File
+ * This does the resource allocation and binding for both operations and edges
+ * using Dr. Srinivas Katkoori implemetation of the Clique Partitioning
+****************************************************************************/
 #include "../header/algo.h"
 #include "clique_partition.c"
 
@@ -35,7 +45,7 @@ vec2d allocate_and_bind (const vector<T> &v)
 
 // Template function specializations 
 template
-vector<vector<int>> allocate_and_bind (const vector<operation> &);
+vec2d allocate_and_bind (const vector<operation> &);
 
 template
-vector<vector<int>> allocate_and_bind (const vector<edge> &);
+vec2d allocate_and_bind (const vector<edge> &);

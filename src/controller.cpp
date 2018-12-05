@@ -7,25 +7,26 @@ controller::controller (const datapath &dp)
 
 void controller::generate_control_signals (const datapath &dp)
 {
-	// at time step 0 all registers WR=0 and done = 0
+	// at time step 0 all registers WR=0 
 	for (const auto &r : dp.runits)
 		if (!r.is_input)
 			signal.emplace_back(0, r.WR_name, 0, 1, false);
 
+	// done signal
 	signal.emplace_back(0, "done", 0, 1, false);
-	// rest of the time steps
 
-	int mts = max_timestep(dp); // find the maximum time step
+	// rest of the time steps
+	int mts = dp.max_timestep(); 
 
 	for (int ts = 1; ts <= mts; ts++) // for each time step
 		for (int i = 0; i < dp.funits.size(); i++) // for each functional unit
 			for (int j = 0; j < dp.funits[i].ts.size(); j++) // for each time-step schedule of this functional unit
-				if (dp.funits[i].ts[j] == ts) // if the j's time step is time-step "ts" 
+				if (dp.funits[i].ts[j] == ts) // if the time step is time-step "ts" 
 				{
 					create_mux_signal(dp.fu_mux[i][0], dp.funits[i].i[0][j], ts);
 					create_mux_signal(dp.fu_mux[i][1], dp.funits[i].i[1][j], ts);
 					create_mux_signal(dp.reg_mux, dp.funits[i], dp.funits[i].out[j], ts);
-					break;
+					break; // only one operation can be scheduled at "ts" for this functional unit. So, break
 				}
 
 	// done signal
@@ -73,15 +74,4 @@ void controller::create_WR_signal (const reg_unit &r, int ts)
 
 	signal.emplace_back(ts, r.WR_name, 1, 1, false);
 	signal.emplace_back(ts + 1,r.WR_name, 0, 1, false);
-}
-
-int controller::max_timestep (const datapath &dp) const
-{
-	int mts = numeric_limits<int>::min ();
-
-	for (auto &fu : dp.funits)
-		for (int t : fu.ts)
-			mts = std::max (mts, t);
-
-	return mts;	
 }

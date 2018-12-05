@@ -1,3 +1,14 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header File
+ * Generates the needed datapath data structures. 
+ * This represents the Data Flow Graph
+****************************************************************************/
+
 #ifndef DATA_STRUCTURES_H
 #define DATA_STRUCTURES_H
 

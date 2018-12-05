@@ -1,3 +1,5 @@
+
+
 #include "../header/controller_vhdl.h"
 
 void controller_vhdl::create_vhdl_code (ostream &os)
@@ -62,7 +64,7 @@ void controller_vhdl::create_architecture (ostream &os)
 void controller_vhdl::create_signals (ostream &os)
 {
 	os << "--------------------------- State controller --------------------------------\n";
-	os <<"\tsignal state : integer range 0 to " << g.max_timestep() + 1 << " := 0;\n";
+	os <<"\tsignal state : integer range 0 to " << dp.max_timestep() + 1 << " := 0;\n";
 }
 
 void controller_vhdl::create_process (ostream &os)
@@ -72,7 +74,7 @@ void controller_vhdl::create_process (ostream &os)
 	os <<"\t\tif rising_edge (clock) then\n";
 	os << "\t\t\tcase state is\n";
 
-	int mts = g.max_timestep();
+	int mts = dp.max_timestep();
 	
 	for (int ts = 0; ts <= mts + 1; ts++)
 	{

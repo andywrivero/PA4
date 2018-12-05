@@ -1,3 +1,13 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header File
+ * This represents a functional unit
+****************************************************************************/
+
 #ifndef FU_UNIT_H
 #define FU_UNIT_H
 

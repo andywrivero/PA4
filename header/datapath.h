@@ -1,3 +1,14 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header File
+ * Generates the needed datapath data structures. 
+ * This datastructure is HDL language independent.
+****************************************************************************/
+
 #ifndef DATAPATH_H
 #define DATAPATH_H
 
@@ -5,8 +16,7 @@
 #include "graph.h"
 #include "reg_unit.h"
 #include "fu_unit.h"
-#include "rmux_unit.h"
-#include "fmux_unit.h"
+#include "mux.h"
 
 using std::vector;
 
@@ -29,6 +39,8 @@ public:
 	vector<pair<string, string>> outl;
 
 	datapath (const graph &, const vec2d &, const vec2d &);
+
+	int max_timestep () const;
 };
 
 #endif

@@ -148,14 +148,14 @@ int main ()
 	controller contr (dp);
 	output.open("VHDL_files/" + filename + "_controller.vhd");
 	cout << "Creating controller's VHDL code\n";
-	controller_vhdl contr_vhdl (g, dp, contr, filename);
+	controller_vhdl contr_vhdl (contr, dp, filename);
 	contr_vhdl.create_vhdl_code(output);
 	output.close ();
 	cout << "Done.\n";
 
 	output.open("VHDL_files/" + filename + "_testbench.vhd");
 	cout << "Creating testbench VHDL code\n";
-	testbench_vhdl testbech (g, dp, contr, filename);
+	testbench_vhdl testbech (g, contr, dp, filename);
 	testbech.create_vhdl_code(output);
 	cout << "Done.\n";
 	output.close ();

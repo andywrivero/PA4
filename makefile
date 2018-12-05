@@ -23,7 +23,7 @@ $(OBJ)/edge.o: $(SRC)/edge.cpp $(HDR)/edge.h
 $(OBJ)/operation.o: $(SRC)/operation.cpp $(HDR)/operation.h
 	$(CC) $(FLAG) -o $(OBJ)/operation.o -c $(SRC)/operation.cpp
 
-$(OBJ)/datapath.o: $(SRC)/datapath.cpp $(HDR)/datapath.h $(HDR)/graph.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)/rmux_unit.h $(HDR)/fmux_unit.h
+$(OBJ)/datapath.o: $(SRC)/datapath.cpp $(HDR)/datapath.h $(HDR)/graph.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)/mux.h
 	$(CC) $(FLAG) -o $(OBJ)/datapath.o -c $(SRC)/datapath.cpp
 
 $(OBJ)/algo.o: $(SRC)/algo.cpp $(HDR)/algo.h $(HDR)/graph.h $(SRC)/clique_partition.c
@@ -32,7 +32,7 @@ $(OBJ)/algo.o: $(SRC)/algo.cpp $(HDR)/algo.h $(HDR)/graph.h $(SRC)/clique_partit
 $(OBJ)/datapath_vhdl.o: $(SRC)/datapath_vhdl.cpp $(HDR)/datapath_vhdl.h $(HDR)/graph.h
 	$(CC) $(FLAG) -o $(OBJ)/datapath_vhdl.o -c $(SRC)/datapath_vhdl.cpp 
 
-$(OBJ)/controller.o: $(SRC)/controller.cpp $(HDR)/controller.h $(HDR)/graph.h $(HDR)/datapath.h
+$(OBJ)/controller.o: $(SRC)/controller.cpp $(HDR)/controller.h $(HDR)/graph.h $(HDR)/datapath.h $(HDR)/mux.h
 	$(CC) $(FLAG) -o $(OBJ)/controller.o -c $(SRC)/controller.cpp
 
 $(OBJ)/controller_vhdl.o: $(SRC)/controller_vhdl.cpp $(HDR)/controller_vhdl.h $(HDR)/controller.h $(HDR)/datapath.h

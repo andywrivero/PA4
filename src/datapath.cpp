@@ -119,3 +119,14 @@ void datapath::create_output_links (const graph &g)
 			if (g.edges[e].type == OUT)
 				outl.emplace_back(g.edges[e].edge_name, r.out_name);
 }
+
+int datapath::max_timestep () const
+{
+	int mts = numeric_limits<int>::min ();
+
+	for (const auto &fu : funits)
+		for (const int &t : fu.ts)
+			mts = std::max (mts, t);
+
+	return mts;	
+}

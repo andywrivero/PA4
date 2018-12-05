@@ -1,3 +1,13 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header File
+ * This represents an edge in the DFG. It holds all necessary data in the graph
+****************************************************************************/
+
 #ifndef EDGE_H
 #define EDGE_H
 

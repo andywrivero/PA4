@@ -142,6 +142,7 @@ void datapath_vhdl::create_funits (ostream &os)
 				os << "\tinput2 => " << fu.i2_name << ",\n";
 				os << "\toutput => " << fu.out_name << ");\n\n";
 			break;
+			case DIV:
 				os << fu.fu_name << " : entity work." << "c_divider\n";
 				os << "\tgeneric map\n";
 				os << "\t(width => " << fu.w << ")\n";
