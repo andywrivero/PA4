@@ -1,3 +1,12 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header file: Defines the structure of an register unit
+****************************************************************************/
+
 #ifndef REG_UNIT_H
 #define REG_UNIT_H
 

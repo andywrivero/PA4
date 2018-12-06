@@ -7,49 +7,15 @@ using std::endl;
 
 int main ()
 {
-	int inp;
-	int svin2;
-	int svin13;
-	int svin18;
-	int svin26;
-	int svin33;
-	int svin38;
-	int svin39;
-	int TWO;
-	int svout2;
-	int svout13;
-	int svout18;
-	int svout26;
-	int svout33;
-	int svout38;
-	int svout39;
-	int outpi;
-	int var3;
-	int var32;
-	int var12;
-	int var20;
-	int var25;
-	int var21;
-	int var24;
-	int var19;
-	int var27;
-	int var11;
-	int var22;
-	int var29;
-	int var9;
-	int var30;
-	int var8;
-	int var31;
-	int var7;
-	int var10;
-	int var28;
-	int var41;
-	int var6;
-	int var15;
-	int var35;
-	int var4;
-	int var16;
-	int var36;
+	int inp, svin2, svin13, svin18, svin26, svin33, 
+		svin38, svin39, TWO, svout2, svout13, 
+		svout18, svout26, svout33, svout38, svout39, 
+		outpi, var3, var32, var12, var20, 
+		var25, var21, var24, var19, var27, 
+		var11, var22, var29, var9, var30, 
+		var8, var31, var7, var10, var28, 
+		var41, var6, var15, var35, var4, 
+		var16, var36;
 
 	cout << "Enter input inp : "; cin >> inp;
 	cout << "Enter input svin2 : "; cin >> svin2;

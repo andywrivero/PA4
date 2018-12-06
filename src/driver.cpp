@@ -1,3 +1,12 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Source File: This is the main driver file
+****************************************************************************/
+
 #include <iostream>
 #include <string>
 #include <fstream>

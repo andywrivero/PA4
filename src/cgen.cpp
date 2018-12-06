@@ -1,9 +1,28 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Source File
+ * This generates a CPP file out of the data flow graph operations specifications
+ * Which then can be used to test the output of the generated VHDL circuit
+****************************************************************************/
+
 #include "../header/cgen.h"
 
 void genrate_inputs (const graph &g, ostream &os)
 {
-	for (int i = 0; i < g.edges.size(); i++)
-		os << "\tint " << g.edges[i].edge_name << ";\n";
+	os << "\tint ";
+
+	for (int i = 0; i < g.edges.size() - 1; i++)
+	{
+		os << g.edges[i].edge_name << ", ";
+
+		if (i > 0 && i % 5 == 0) os << "\n\t\t";
+	}
+
+	os << g.edges.back().edge_name << ";\n";
 
 	os << "\n";
 

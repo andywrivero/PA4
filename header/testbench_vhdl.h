@@ -1,3 +1,12 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Header file: This class helps generate a VHDL testbench file
+****************************************************************************/
+
 #ifndef TESTBENCH_VHDL_H
 #define TESTBENCH_VHDL_H
 

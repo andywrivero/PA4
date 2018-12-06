@@ -1,4 +1,12 @@
-
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Source File
+ * This generates the VHDL controller
+****************************************************************************/
 
 #include "../header/controller_vhdl.h"
 

@@ -1,3 +1,12 @@
+/****************************************************************************
+ * Digital Circuit Synthesis Final Project
+ * Controller, Datapath, and Testbench generation using Data Flow Graphs
+ * 
+ * Authors: Anthony Teresi, Mary Mouro, and Andy Rivero
+ * 
+ * Source File: This implements the functions of the graph class
+****************************************************************************/
+
 #include "../header/graph.h"
 
 /********************************* Data Flow Graph Implementation *************************************/
