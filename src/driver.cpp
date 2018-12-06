@@ -13,6 +13,7 @@
 #include "../header/controller.h"
 #include "../header/controller_vhdl.h"
 #include "../header/testbench_vhdl.h"
+#include "../header/cgen.h"
 
 using std::ifstream;
 using std::ofstream;
@@ -54,7 +55,7 @@ void read_graph (graph &g)
 	cout << "Reading Data Flow Graph...\n";
 
 	//  open input file
-	filename = "toyexample";
+	filename = "ellip";
 	string filext = ".aif";
 	string filepath = "inputs/" + filename + filext;
 	ifstream fi (filepath);
@@ -159,6 +160,16 @@ int main ()
 	testbech.create_vhdl_code(output);
 	cout << "Done.\n";
 	output.close ();
+
+	// This code below can be used to generate a C++.
+	// This file represents the circuit. One can compile this file and verify the output
+	// with that of the VHDL output
+	#define CPP_GENERATION
+	#ifdef CPP_GENERATION
+		output.open("CPP_test/" + filename + ".cpp");
+		generate_C_test (g, output);
+		output.close ();
+	#endif
 
 	return 0;
 }

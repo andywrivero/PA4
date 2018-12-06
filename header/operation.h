@@ -15,7 +15,7 @@ public:
 	string op_name;
 	operation_type type; // operation type
 	int w, ts,   		 // width and time step
-		i1, i2, out; 	 // the two input registers, and the output register indexes
+		i1, i2, out; 	 // the two input edges, and the output edge indexes
 	vector<int> suc;	 // dependencies
 	vector<int> pred;	 // dependencies
 

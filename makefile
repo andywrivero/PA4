@@ -8,10 +8,10 @@ OBJ = obj
 HDR = header
 BIN = bin
 
-$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o $(OBJ)/controller.o $(OBJ)/controller_vhdl.o $(OBJ)/testbench_vhdl.o
-	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o $(OBJ)/controller.o $(OBJ)/controller_vhdl.o $(OBJ)/testbench_vhdl.o
+$(BIN)/driver: $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o $(OBJ)/controller.o $(OBJ)/controller_vhdl.o $(OBJ)/testbench_vhdl.o $(OBJ)/cgen.o
+	$(CC) $(FLAG) -o $(BIN)/driver $(OBJ)/driver.o $(OBJ)/graph.o $(OBJ)/algo.o $(OBJ)/datapath_vhdl.o $(OBJ)/edge.o $(OBJ)/operation.o $(OBJ)/datapath.o $(OBJ)/controller.o $(OBJ)/controller_vhdl.o $(OBJ)/testbench_vhdl.o $(OBJ)/cgen.o
 
-$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/graph.h $(HDR)/algo.h $(HDR)/operation.h $(HDR)/datapath.h $(HDR)/datapath_vhdl.h $(HDR)/controller.h $(HDR)/controller_vhdl.h $(HDR)/testbench_vhdl.h
+$(OBJ)/driver.o: $(SRC)/driver.cpp $(HDR)/graph.h $(HDR)/algo.h $(HDR)/operation.h $(HDR)/datapath.h $(HDR)/datapath_vhdl.h $(HDR)/controller.h $(HDR)/controller_vhdl.h $(HDR)/testbench_vhdl.h $(HDR)/cgen.h
 	$(CC) $(FLAG) -o $(OBJ)/driver.o -c $(SRC)/driver.cpp 
 
 $(OBJ)/graph.o: $(SRC)/graph.cpp $(HDR)/graph.h $(HDR)/edge.h $(HDR)/operation.h $(HDR)/reg_unit.h $(HDR)/fu_unit.h $(HDR)
@@ -40,3 +40,6 @@ $(OBJ)/controller_vhdl.o: $(SRC)/controller_vhdl.cpp $(HDR)/controller_vhdl.h $(
 
 $(OBJ)/testbench_vhdl.o: $(SRC)/testbench_vhdl.cpp $(HDR)/testbench_vhdl.h $(HDR)/controller.h $(HDR)/datapath.h $(HDR)/graph.h
 	$(CC) $(FLAG) -o $(OBJ)/testbench_vhdl.o -c $(SRC)/testbench_vhdl.cpp 
+
+$(OBJ)/cgen.o: $(SRC)/cgen.cpp $(HDR)/cgen.h $(HDR)/graph.h
+	$(CC) $(FLAG) -o $(OBJ)/cgen.o -c $(SRC)/cgen.cpp 
