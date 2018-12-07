@@ -7,25 +7,10 @@ using std::endl;
 
 int main ()
 {
-	int a1;
-	int y1;
-	int a2;
-	int y2;
-	int b0;
-	int x0;
-	int b1;
-	int x1;
-	int b2;
-	int x2;
-	int yout;
-	int r1;
-	int r2;
-	int r3;
-	int r4;
-	int r5;
-	int r6;
-	int r7;
-	int r8;
+	int a1, y1, a2, y2, b0, x0, 
+		b1, x1, b2, x2, yout, 
+		r1, r2, r3, r4, r5, 
+		r6, r7, r8;
 
 	cout << "Enter input a1 : "; cin >> a1;
 	cout << "Enter input y1 : "; cin >> y1;

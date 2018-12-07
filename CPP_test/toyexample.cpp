@@ -7,21 +7,9 @@ using std::endl;
 
 int main ()
 {
-	int a;
-	int b;
-	int c;
-	int d;
-	int e;
-	int f;
-	int g;
-	int h;
-	int i;
-	int t0;
-	int t1;
-	int t2;
-	int t3;
-	int t4;
-	int t5;
+	int a, b, c, d, e, f, 
+		g, h, i, t0, t1, 
+		t2, t3, t4, t5;
 
 	cout << "Enter input a : "; cin >> a;
 	cout << "Enter input b : "; cin >> b;

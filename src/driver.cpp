@@ -29,10 +29,9 @@ using std::ofstream;
 using std::vector;
 using std::string;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::to_string;
-
-string filename;
 
 /*************************** Driver methods **********************/
 operation_type to_operation_type (string stype)
@@ -59,15 +58,16 @@ string to_operation_stype (operation_type type)
 		return "DIV";
 }
 
-void read_graph (graph &g)
+void read_graph (graph &g, string &filename)
 {
-	cout << "Reading Data Flow Graph...\n";
+	cout << "Enter .aif filename: "; 
+	cin >> filename;
 
 	//  open input file
-	filename = "ellip";
-	string filext = ".aif";
-	string filepath = "inputs/" + filename + filext;
+	string filepath = filename + ".aif";
 	ifstream fi (filepath);
+
+	cout << "Reading Data Flow Graph...\n";
 
 	string s1, s2, s3, s4, s5;
 	int width;
@@ -115,11 +115,26 @@ void read_graph (graph &g)
 
 int main ()
 {	
+	string filename;
 	graph g;
-	read_graph (g);
 
-	#define LIST_R
-	#ifdef LIST_R
+	read_graph (g, filename);
+
+	char answer;
+
+	do
+	{
+		cout << "Select LIST_R or LIST_L scheduling (R/L)?";
+		cin >> answer;
+
+		if (answer != 'L' && answer != 'l' && answer != 'R' && answer != 'r')
+			cout << "Wrong selectiong...\n";	
+
+	} while (answer != 'L' && answer != 'l' && answer != 'R' && answer != 'r');
+
+
+	if (answer == 'R' || answer == 'r')
+	{
 		int l;
 		std::cout << "Enter Lambda: ";
 		std::cin >> l;	
@@ -129,12 +144,14 @@ int main ()
 			cout << "No Solution\n";
 			return 0;
 		}
-	#else 
+	}
+	else
+	{
 		int a[4];
 		cout << "Enter the number of resources for ADD, SUB, MULT and DIV : ";
 		std::cin >> a[0] >> a[1] >> a[2] >> a[3];
 		g.list_l (a[0], a[1], a[2], a[3]); 
-	#endif 
+	}
 
 	cout << "Allocating and binding operations\n";
 	auto ops_cliques = allocate_and_bind(g.ops);
